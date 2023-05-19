@@ -1,0 +1,213 @@
+Marcus NG -> Pa practicar UI
+
+ctrl + . Para opciones de css
+const : constante
+bool : boolean
+covariant : keyword -> le dice a dart que olvide lo que tiene en la superclass
+y eche cuenta a lo que le estoy diciendo.
+var: variable
+final: es como una constante pero te da la posibilidad de cambiar el valor mas adalante.
+'$____': para llamar a un parámetro
+String/Int/Boolean funcion() : dice que va a devolver
+String * n : multiplica la string x numero de veces 
+-------------------------------
+--var o ++var : modificia -1 o +1 la variable original.
+
+ var age = 20;
+ final ageMinusOne = --age;
+
+  print(age);
+  print(ageMinusOne);
+
+Los dos son 19.
+-------------------------------
+Arrays:
+[] array normal
+ array.add() : Añade uno al final
+{} array de valores unicos ( no se repiten ) o crear maps. {'age':20, name:'name'}
+person['name'] = 'Maria' (cambiar el valor)
+
+---------------------------------
+Nullable:
+String?
+int?
+ List<String>? names = ['Foo', 'Bar']; Esto hace que la lista en sí pueda ser NULL pero no 
+ que uno de sus valores puedan ser null.
+ Si queremos que sea posible que algunos de sus valores sean null hay que poner:
+ List<String?>?
+
+ final no puede ir con ?
+
+ ?? sirve para comparar valores y devolver el primero que no es null:
+ int a;
+ int b = 2;
+ int c = 3;
+ a ?? b ?? c // devuelve 2 porque a es nulo (no compara el c porque b ya no es nulo)
+
+??= sirve para asignar un valor si el dado primero es null
+
+void tets(String? firstName, String? lastName)
+String? name = firstName
+name ??= lastName
+
+test(null, 'lola') Imprimirá lola.
+
+Si names es null, da 0 
+final length = names?.length ?? 0;
+
+
+Enum 
+enum NombreDelEnum {propiedades,del,enum}
+
+Se usa mucho con switch:
+enum AnimalType { cat, dog, bunny }
+
+void test(AnimalType animalType) {
+  switch (animalType) {
+    case AnimalType.cat:
+      print("cat");
+      break;
+    case AnimalType.dog:
+      print("dog");
+      break;
+    case AnimalType.bunny:
+      print("bunny");
+  }
+  print("IT IS OVER");
+}
+------------------------------------
+Instanciar una clase:
+final person = Person();
+class Person {
+  final String name; // propiedades
+  Person(this.name); // constructor
+}
+------------------------------
+Herencia:
+class LivingThing {
+  void breathe() {
+    print("Living and breathing");
+  }
+}
+
+class Cat extends LivingThing {}
+
+----------------------------
+abstract
+No se puede instanciar.
+-----------------------
+factories:
+La principal ventaja de utilizar una fábrica en lugar de un 
+constructor es que la fábrica puede devolver cualquier instancia de la clase, no necesariamente una nueva instancia. 
+Esto puede ser útil para implementar patrones de diseño como Singleton o Flyweight, por ejemplo.
+-----------------------------------------------------------------------------------------
+No podemos poner 
+void test() {
+  final cat1 = Cat("ledo");
+  final cat2 = Cat("ledo2");
+  if (cat1 == cat2) {
+    print("They are the same");
+  } else {
+    print("They are not the same");
+  }
+}
+Ya que no entiende que sean lo mismo ,entonces debemos hacer lo siguiente:
+Hacemos override del operator == de la clase object y le decimos que olvide que espera
+un tipo objecto, porque ahora recibira un tipo"Cat" con una propiedad other.
+@override
+  bool operator ==(covariant Cat other) => other.name == name;
+
+   Es como una identificación especial que se le da a cada objeto de la clase. 
+   Este método te da un número que representa al objeto "Cat" en una tabla.
+   En este caso se usa name como hashcode.
+ @override
+  int get hashCode => name.hashCode;
+
+  ---------------------------------
+  extensiones:
+  Sirven para añadir funcionalidades extra sin tener que modificar la clase
+  extension Run on Cat {
+  void run() {
+    print('cat $name is running');
+  }
+}
+--------------------------------------
+Future( async)
+si se necesita un valor único que se resolverá en el futuro, se debe usar un Future
+Future<int> heavyFuture(int a) {
+ return Future.delayed(Duration(seconds: 3), () { return a * 2 });
+}
+void test() async {
+  final result = await heavyFuture(10);
+  print(result);
+}
+------------------------------------------------
+Streams 
+Si se necesita una secuencia de valores
+ que se pueden procesar a medida que llegan, se debe usar un Stream
+Stream<String> getName() {
+  return Stream.value('Foo');
+}
+
+void test() async {
+  await for (final value in getName())
+  print(value);
+}
+--------------------------------
+No se usan mucho
+Iterables(lazy collections)
+Iterable<int> getNumbers() sync* {
+  yield 1;
+}
+
+Si usas sync* no puedes usar return, se usa yield y puedes poner un moonton.
+---------------------------------------------------------
+Genericos:
+class Pair<A, B> {
+  final A value1;
+  final B value2;
+  Pair(this.value1, this.value2);
+}
+--------------------------------------
+
+dependencias :
+flutter pub add firebase_core // importa las partes importantes de firebase
+flutter pub add firebase_auth // autenticacion
+flutter pub add cloud_firestore  // nube
+ flutter pub add firebase_analytics // analisis 
+
+ -------------------------
+ debemos instalar ADB
+ brew install --cask android-platform-tools
+ para usar comandos para que el movil haga cosas ( acapturas de pantallas etc)
+
+----------------------------
+Stateful:
+Para contenido que cambia
+Cuando haces reload se mantiene la data.
+(para listas, formularios)
+
+Stateless:
+Para contenido que se mantiene fijo ( icon, fotos etc)
+
+Scaffold:
+Scaffold es un widget en Flutter que implementa una estructura 
+visual básica para aplicaciones móviles y 
+proporciona una estructura para implementar 
+la mayoría de las características comunes en una aplicación, 
+como la barra de aplicación, el menú desplegable de navegación, 
+el botón flotante de acción, etc.
+
+El widget Scaffold se compone de varios widgets secundarios, 
+como AppBar, FloatingActionButton, BottomNavigationBar,
+ Drawer, SnackBar, TabBar, etc.
+
+--------------------------------------------
+
+BLOC:
+separa la logica de negocio con el ui
+
+Cada bloc tiene dos propiedades muy importantes.
+1.State: va fuera . Describe el estado de bloc.
+2.Event: Va dentro de Bloc
+
