@@ -1,0 +1,55 @@
+# Archivos generados por Flutter
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub/
+/build/
+.dart_tool/
+.idea/
+
+# Dependencias de Flutter
+/bin/cache/
+/packages/
+/pubspec.lock
+/pubspec.yaml.lock
+
+# Android
+android/.gradle/
+android/app/build/
+android/app/intermediates/
+android/app/outputs/
+android/build/
+android/gradle/
+android/gradlew
+android/gradlew.bat
+android/local.properties
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/.generated/
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+
+# macOS
+macos/Pods/
+macos/Flutter/Debug.xcconfig
+macos/Flutter/Release.xcconfig
+
+# Visual Studio Code
+.vscode/
+
+# Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+*.bak/
+*.swp
+
+# Flutter test coverage
+coverage/
+
+# Firebase
+firebase_options.dart
