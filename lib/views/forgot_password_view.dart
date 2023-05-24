@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mynotes/services/auth/bloc/auth_bloc.dart';
+import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
 import 'package:mynotes/utilities/dialogs/error_dialog.dart';
-
-import '../services/auth/bloc/auth_bloc.dart';
-import '../services/auth/bloc/auth_event.dart';
-import '../utilities/dialogs/password_reset_email_sent_dialog.dart';
+import 'package:mynotes/utilities/dialogs/password_reset_email_sent_dialog.dart';
 
 class ForgotPasswordView extends StatefulWidget {
-  const ForgotPasswordView({super.key});
+  const ForgotPasswordView({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
+  _ForgotPasswordViewState createState() => _ForgotPasswordViewState();
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
@@ -42,7 +39,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           }
           if (state.exception != null) {
             await showErrorDialog(context,
-                'We could not send you a password reset email. Please try again later.');
+                'We could not process your request. Please make sure that you are a registered user, or if not, register a user now by going back one step.');
           }
         }
       },
@@ -52,37 +49,39 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                  'If you have forgotten your password, please enter your email address and we will send you a link to reset your password.'),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                autofocus: true,
-                controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: 'Your email address....',
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text(
+                    'If you forgot your password, simply enter your email and we will send you a password reset link.'),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  autofocus: true,
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                    hintText: 'Your email address....',
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  final email = _controller.text;
-               
-                  context.read<AuthBloc>().add(
-                        AuthEventForgotPassword(email: email),
-                      );
-                },
-                child: const Text('Send Password Reset Email'),
-              ),
-              TextButton(
+                TextButton(
+                  onPressed: () {
+                    final email = _controller.text;
+                    context
+                        .read<AuthBloc>()
+                        .add(AuthEventForgotPassword(email: email));
+                  },
+                  child: const Text('Send me password reset link'),
+                ),
+                TextButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(
                           const AuthEventLogOut(),
                         );
                   },
-                  child: const Text('Back to Login')),
-            ],
+                  child: const Text('Back to login page'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

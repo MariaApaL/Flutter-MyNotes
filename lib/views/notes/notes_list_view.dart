@@ -1,9 +1,6 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:mynotes/services/crud/notes_service.dart';
-
-import '../../services/cloud/cloud_note.dart';
-import '../../utilities/dialogs/delete_dialog.dart';
+import 'package:mynotes/services/cloud/cloud_note.dart';
+import 'package:mynotes/utilities/dialogs/delete_dialog.dart';
 
 typedef NoteCallback = void Function(CloudNote note);
 
@@ -26,24 +23,25 @@ class NotesListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final note = notes.elementAt(index);
         return ListTile(
-            onTap: () {
-              onTap(note);
+          onTap: () {
+            onTap(note);
+          },
+          title: Text(
+            note.text,
+            maxLines: 1,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: IconButton(
+            onPressed: () async {
+              final shouldDelete = await showDeleteDialog(context);
+              if (shouldDelete) {
+                onDeleteNote(note);
+              }
             },
-            title: Text(
-              note.text,
-              maxLines: 1,
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
-            ),
-            trailing: IconButton(
-              onPressed: () async {
-                final shouldDelete = await showDeleteDialog(context);
-                if (shouldDelete) {
-                  onDeleteNote(note);
-                }
-              },
-              icon: const Icon(Icons.delete),
-            ));
+            icon: const Icon(Icons.delete),
+          ),
+        );
       },
     );
   }
